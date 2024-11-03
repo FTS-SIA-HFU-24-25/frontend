@@ -7,7 +7,22 @@
   </head>
 
   <body>
-    <div id="app"></div>
+    <header class="m-2 flex justify-between">
+      <div>
+        <h1 class="font-semibold">Fitness Tracker Weste - SIA Projekt</h1>
+        <span id="last-update" class="text-sm"></span>
+      </div>
+      <div
+        id="connection-rate"
+        class="flex flex-col justify-center text-sm"
+      ></div>
+    </header>
+    <section class="m-2 flex w-full items-center justify-between">
+      <canvas id="chart" class="border-black border-2"></canvas>
+      <span class="mr-10" id="heartbeat"
+        >Durschnittliche Herzfrequenz: 0 BPM</span
+      >
+    </section>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
