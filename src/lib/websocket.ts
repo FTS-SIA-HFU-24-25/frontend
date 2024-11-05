@@ -1,5 +1,6 @@
 import Chart from "chart.js/auto"
 import { addDataToChart } from "./chart.ts"
+import { EcgWSEvent } from "./types.ts"
 
 const lastUpdate = document.getElementById("last-update")
 const heartbeat = document.getElementById('heartbeat')
@@ -24,18 +25,12 @@ export function createWebSocket(chart: Chart<"line", any, unknown>) {
         try {
             // Parse the JSON data received from the server
             const data = JSON.parse(event.data);
+            console.log(data)
             if(data.event == "ekg-changes" ) {
-                addDataToChart(chart, {
-                    timestamp: new Date(data.data.timestamp).toLocaleTimeString(),
-                    data: data.data.value,
-                    type: 0,
-                })
-            } else {
-                console.log(data)
-            }
-            if(data.event == "heartbeat" && heartbeat) {
-                heartbeat.innerHTML = `
-                    Durchscnittliche Herzfrequenz: ${data.data.avg} BPM
+                const ecg: EcgWSEvent = data.data
+                addDataToChart(chart, ecg)
+                heartbeat!.innerHTML = `
+                    Durchschnittliche Herzfrequenz: ${ecg.avg} BPM
                 `
             }
             if(data.event == "pong" && connectionRate) {
