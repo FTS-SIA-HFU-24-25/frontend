@@ -8,7 +8,7 @@ const connectionRate = document.getElementById("connection-rate")
 
 export function createWebSocket(chart: Chart<"line", any, unknown>) {
     // Replace this URL with the URL of your WebSocket server
-    const socketUrl = "http://127.0.0.1:3001/ws";
+    const socketUrl = "/ws";
 
     const socket = new WebSocket(socketUrl);
     let startTime: number = Date.now();
