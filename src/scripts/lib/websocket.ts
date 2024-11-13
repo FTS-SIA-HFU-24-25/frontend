@@ -1,14 +1,14 @@
 import Chart from "chart.js/auto"
 import { addDataToChart } from "./chart.ts"
-import { EcgWSEvent } from "./types.ts"
+import { EcgWSEvent, SpectrumWSEvent } from "./types.ts"
 
 const lastUpdate = document.getElementById("last-update")
 const heartbeat = document.getElementById('heartbeat')
 const connectionRate = document.getElementById("connection-rate")
 
-export function createWebSocket(chart: Chart<"line", any, unknown>) {
+export function createWebSocket(chart: Chart<"line", any, unknown>, hb: Chart<"line", any, unknown>, spectrum: Chart<"line", any, unknown>) {
     // Replace this URL with the URL of your WebSocket server
-    const socketUrl = "/ws";
+    const socketUrl = "ws://127.0.0.1:3001/ws";
 
     const socket = new WebSocket(socketUrl);
     let startTime: number = Date.now();
@@ -28,19 +28,22 @@ export function createWebSocket(chart: Chart<"line", any, unknown>) {
             console.log(data)
             if(data.event == "ekg-changes" ) {
                 const ecg: EcgWSEvent = data.data
-                addDataToChart(chart, ecg)
+                addDataToChart(chart, ecg.signals)
+                if(chart.data.datasets[0].data.length%100 == 0){
+                    addDataToChart(hb, [ecg.avg])
+                }
                 heartbeat!.innerHTML = `
                     Durchschnittliche Herzfrequenz: ${ecg.avg} BPM
                 `
-            }
-            if(data.event == "pong" && connectionRate) {
-                        const latency = Date.now() - startTime;
-                connectionRate.innerHTML = `
-                   ${latency}ms - Internet Verbindung 
-`
+            } else if(data.event == "spectrum-changes") {
+                const res: SpectrumWSEvent = data.data;
+                addDataToChart(spectrum, res.spectrum, res.frequency)
+            } else if(data.event == "pong" && connectionRate) {
+                const latency = Date.now() - startTime;
+                connectionRate.innerHTML = `${latency}ms - Internet Verbindung`
             }
             lastUpdate!.innerHTML = `
-                Letzte Aktualisierung: ${new Date(data.data.timestamp).toLocaleString()}
+                ${new Date(data.data.timestamp).toLocaleString()}
             `
         } catch (error) {
             console.error("Error parsing JSON:", error);

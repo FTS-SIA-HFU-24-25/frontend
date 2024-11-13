@@ -1,5 +1,6 @@
 import Chart from "chart.js/auto"
-import { EcgWSEvent } from "./types.ts"
+
+const FREQUENCY = 100;
 
 export interface ChartData {
 	timestamp: string,
@@ -65,14 +66,19 @@ export function createChart(id: string, data: ChartData[]): Chart<"line", any, u
 	return chart
 }
 
-export function addDataToChart(chart: Chart<"line", any, unknown>, data: EcgWSEvent) {
-	chart.data.labels?.push(new Date(data.timestamp).toLocaleTimeString())
-	chart.data.datasets[0].data.push(...data.signals)
-	//chart.options.scales!.y!.max = data.max;
-	//chart.options.scales!.y!.min = data.min;
-	if(chart.data.datasets[0].data.length > data.frequency * 20 && chart.data.datasets[0].data.length % data.frequency == 0) {
-		chart.data.datasets[0].data = chart.data.datasets[0].data.slice(data.frequency, -1)
-		chart.data.labels = chart.data.labels?.slice(data.frequency, -1)
+export function addDataToChart(chart: Chart<"line", any, unknown>, data: number[], labels?: number[], short?: boolean) {
+	if(labels) {
+		chart.data.labels = labels;
+		chart.data.datasets[0].data = data;
+	} else {
+		let multiplier = short ? 5 : 20;
+		chart.data.labels?.push(new Date().toLocaleTimeString())
+		chart.data.datasets[0].data.push(...data)
+		if(chart.data.datasets[0].data.length > FREQUENCY * multiplier) {
+			console.log("slice", chart.data.datasets[0].data.length, FREQUENCY * multiplier)
+			chart.data.datasets[0].data.shift();
+			chart.data.labels?.shift();
+		}
 	}
 	console.log(chart.data.datasets[0].data.length)
 	chart.update()

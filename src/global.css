@@ -9,4 +9,8 @@
 	canvas {
 		@apply max-w-[50%] max-h-[400px]
 	}
+	li {
+		@apply text-white font-semibold; 
+	}
 }
+

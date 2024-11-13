@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fitness Tracker</title>
+  <link rel="icon" href="/public/fts-40px.png" type="image/png" />
+</head>
+
+<body>
+  <nav class="w-full bg-secondary">
+    <ul class="max-w-full p-2 px-6 flex justify-between items-center">
+      <li class="w-1/2 font-bold flex justify-start items-center text-white">
+        <img src="/public/fts-40px.png" alt="Fitness Tracker"
+          class="rounded-sm max-w-[40px] max-h-[30px] bg-white mr-2" />
+        <a href="/">HFU SIA-Projekt</a>
+      </li>
+      <li><a href="/ekg-sensor">EKG</a></li>
+      <li><a href="/temp">Körpertemperatur</a></li>
+      <li><a href="/gps">GPS</a></li>
+    </ul>
+  </nav>
+  <header class="w-full flex justify-between">
+    <div class="block">
+      <h1 class="font-semibold">EKG Signale</h1>
+      <span id="last-update" class="text-[0.6rem]"></span>
+    </div>
+    <div id="connection-rate" class="flex flex-col justify-center text-sm"></div>
+  </header>
+  <section class="block">
+    <div class="m-2 flex w-full items-center justify-between">
+      <canvas id="chart" class="bg-[#f2f2f2] rounded-lg shadow-black"></canvas>
+      <span class="mr-10" id="heartbeat">Durschnittliche Herzfrequenz: 0 BPM</span>
+    </div>
+    <div class="m-2">
+      <h2 class="text-xl font-bold my-4">Beat per Minute</h2>
+      <canvas id="hb" class="bg-[#f2f2f2] rounded-lg shadow-black"></canvas>
+    </div>
+    <div class="m-2">
+      <h2 class="text-xl font-bold my-4">Frequency Spectrum</h2>
+      <canvas id="spectrum" class="bg-[#f2f2f2] rounded-lg shadow-black"></canvas>
+    </div>
+  </section>
+  <script type="module" src="/src/main.ts"></script>
+  <script type="module" src="/src/scripts/ekg-init.ts"></script>
+</body>
+
+</html>
