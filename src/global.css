@@ -6,9 +6,6 @@
 	body {
 		@apply bg-neutral-200 text-black w-full min-h-screen
 	}
-	canvas {
-		@apply max-w-[50%] max-h-[400px]
-	}
 	li {
 		@apply text-white font-semibold; 
 	}

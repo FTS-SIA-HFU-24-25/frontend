@@ -1,6 +1,7 @@
-import { createChart, ChartData } from "./lib/chart.ts"
+import { ChartData } from "./lib/chart.ts"
 import { createWebSocket } from "./lib/websocket.ts"
 import Chart from "chart.js/auto"
+import "../styles/ekg-sensor.css"
 
 const data: any[] = [];
 const chart = new Chart(document.getElementById("chart") as HTMLCanvasElement, {
@@ -17,6 +18,7 @@ const chart = new Chart(document.getElementById("chart") as HTMLCanvasElement, {
 		]
 	},
 	options: {
+		responsive: true,
 		plugins: {
 			legend: {
 				display: false,
@@ -30,7 +32,7 @@ const chart = new Chart(document.getElementById("chart") as HTMLCanvasElement, {
 				ticks: {
 					callback: function(value, index, _ticks) {
 						if (index === 0) {
-							return this.getLabelForValue(value as number); // Only show labels at start, middle, and end
+							return "Start"; // Only show labels at start, middle, and end
 						}
 						return '';
 					}
@@ -83,6 +85,14 @@ const hb = new Chart(document.getElementById("hb") as HTMLCanvasElement, {
 						return ""
 					}
 				},
+				grid: {
+					color: "#999",
+				}
+			},
+			y: {
+				grid: {
+					color: "#999"
+				},
 			},
 		},
 	},
@@ -128,4 +138,4 @@ chart.options.animation = false; // disables all animations
 hb.options.animation = false;
 spectrum.options.animation = false;
 
-createWebSocket(chart,hb,spectrum)
+ createWebSocket(chart,hb,spectrum)
