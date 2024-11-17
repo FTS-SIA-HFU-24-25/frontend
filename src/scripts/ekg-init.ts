@@ -85,14 +85,8 @@ const hb = new Chart(document.getElementById("hb") as HTMLCanvasElement, {
 						return ""
 					}
 				},
-				grid: {
-					color: "#999",
-				}
 			},
 			y: {
-				grid: {
-					color: "#999"
-				},
 			},
 		},
 	},

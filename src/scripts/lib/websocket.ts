@@ -1,7 +1,7 @@
 import Chart from "chart.js/auto"
 import { addDataToChart } from "./chart.ts"
 import { EcgWSEvent, SpectrumWSEvent } from "./types.ts"
-import { generateConfig, createListener } from "./config.ts"
+import { generateConfig, createListener, Config } from "./config.ts"
 
 const heartbeat = document.getElementById('heartbeat')
 const connectionRate = document.getElementById("connection-rate")
@@ -28,6 +28,10 @@ export function createWebSocket(chart: Chart<"line", any, unknown>, hb: Chart<"l
         })
         createListener(socket) 
         intv = setInterval(measureLatency, 3000)
+        const localConf: Config = JSON.parse(localStorage.getItem("config") || "{}");
+        if (localConf.chunks_size) {
+            socket.send(JSON.stringify({ event: 4, data: JSON.stringify(localConf) }));
+        }
     };
 
     // Handle messages from the server
@@ -78,7 +82,7 @@ export function createWebSocket(chart: Chart<"line", any, unknown>, hb: Chart<"l
         startTime = Date.now();
         socket.send(JSON.stringify({
             event: 1,
-            data: startTime,
+            data: startTime.toString(),
         }));
     }
 
