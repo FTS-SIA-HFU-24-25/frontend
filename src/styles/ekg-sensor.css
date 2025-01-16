@@ -1,5 +1,0 @@
-@layer charts {
-	canvas {
-		@apply m-3 h-screen w-full;
-	}
-}

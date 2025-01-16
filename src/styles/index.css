@@ -1,5 +1,0 @@
-@layer index {
-	li {
-		@apply text-white font-semibold; 
-	}
-}
