@@ -1,6 +1,6 @@
 interface Base<T> {
 	event: T;
-	data: EKGEvent | SpectrumEvent;
+	data: EKGEvent | SpectrumEvent | Config;
 }
 
 export interface Heartrate extends Base<"heartrate"> {
@@ -13,12 +13,17 @@ export interface Spectrum extends Base<"spectrum"> {
 	data: SpectrumEvent;
 }
 
+export interface Pong extends Base<"pong"> {
+	event: "pong";
+	data: Config;
+}
+
 interface Any extends Base<any> {
 	event: any;
 	data: any;
 }
 
-export type WebSocketEvent<T> = T extends "heartrate" ? Heartrate : T extends "spectrum" ? Spectrum : Any;
+export type WebSocketEvent<T> = T extends "heartrate" ? Heartrate : T extends "spectrum" ? Spectrum : T extends "pong" ? Pong : Any;
 
 export interface EKGEvent {
 	signals: number[];	
@@ -31,4 +36,13 @@ export interface EKGEvent {
 export interface SpectrumEvent {
 	spectrum: number;
 	frequency: number;
+}
+
+export interface Config {
+	chunks_size: number;
+	start_receive_data: number;
+	filter_type: number;
+	max_pass: number;
+	min_pass: number;
+	spectrum_update_request: number;
 }
