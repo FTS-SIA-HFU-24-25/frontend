@@ -8,13 +8,16 @@ export interface WsState {
 	lastUpdated: Date;
 	ws: WebSocket | null;
 	config: Config;
+	connected: boolean;
 }
 
 export const wsState: Writable<WsState> = writable({
 	heartrate: {} as EKGEvent,
+	ekg: [],
 	lastUpdated: new Date(),
 	ws: null,
 	config: {} as Config,
+	connected: false,
 })
 
 export const connect = (): WebSocket => {
@@ -26,14 +29,15 @@ export const connect = (): WebSocket => {
 		wsState.update((state) => ({
 			...state,
 			lastUpdated: new Date(),
-			ws: ws
+			ws: ws,
+			connected: true,
 		}))
 	})
 
 	ws.addEventListener("message", (message: any) => {
 		const raw: WebSocketEvent<any> = JSON.parse(message.data);
 		switch(raw.event) {
-			case "heartrate":
+			case "ekg-changes":
 				_updateHeartrate(wsState, raw as WebSocketEvent<"heartrate">)
 			case "pong":
 				_updatePong(wsState, raw as WebSocketEvent<"pong">)	
@@ -42,6 +46,12 @@ export const connect = (): WebSocket => {
 
 	ws.addEventListener("close", () => {
 		console.log("Disconnected from websocket")
+		wsState.update((state) => ({
+			...state,
+			lastUpdated: new Date(),
+			ws: ws,
+			connected: false,
+		}))
 	})
 
 	return ws

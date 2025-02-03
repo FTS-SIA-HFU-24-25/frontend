@@ -10,7 +10,10 @@
 			return
 		}
 		connect()
+		webSocketEstablished = true;
 	})
 </script>
 
+<div class="flex w-full h-auto">
 {@render children()}
+</div>
