@@ -1,0 +1,13 @@
+[Unit]
+Description=SvelteKit SSR App
+After=network.target
+
+[Service]
+User=www-data
+WorkingDirectory=/var/www/sveltekit-app
+ExecStart=/snap/bin/bun /var/www/sveltekit-app/index.js
+Restart=always
+Environment=NODE_ENV=production PORT=5137
+
+[Install]
+WantedBy=multi-user.target
