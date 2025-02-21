@@ -1,0 +1,25 @@
+@layer chartist {
+	/* Override the line style on a given series */
+	.ct-series-a .ct-line {
+	@apply stroke-red-500 stroke-[2px];
+	}
+
+	/* Override the points style on line charts */
+	.ct-series-a .ct-point {
+	@apply stroke-red-500 stroke-[20px];
+	fill: #f0f;
+	}
+
+	.ct-area {
+		stroke: none;
+		fill-opacity: 0;
+	}	
+
+	.ct-grid {
+		@apply stroke-neutral-600 stroke-[0.5px];
+	}
+
+	.ct-line {
+		fill: none;
+	}
+}

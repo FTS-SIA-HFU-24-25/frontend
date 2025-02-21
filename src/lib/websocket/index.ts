@@ -4,7 +4,6 @@ import type { WebSocketEvent, EKGEvent, Config } from "$lib/types/websocket"
 import { writable } from "svelte/store"
 
 export interface WsState {
-	heartrate: EKGEvent;
 	lastUpdated: Date;
 	ws: WebSocket | null;
 	config: Config;
@@ -12,13 +11,15 @@ export interface WsState {
 }
 
 export const wsState: Writable<WsState> = writable({
-	heartrate: {} as EKGEvent,
-	ekg: [],
 	lastUpdated: new Date(),
 	ws: null,
 	config: {} as Config,
 	connected: false,
 })
+
+export const ekgState: Writable<number[]> = writable([])
+
+export const heartrateState: Writable<number> = writable(0)
 
 export const connect = (): WebSocket => {
 	const ws = new WebSocket(PUBLIC_WEBSOCKET_URI+"/ws");
@@ -70,11 +71,9 @@ export const ping = (ws: WebSocket) => {
 	}, 3000)
 }	
 
-function _updateHeartrate(state: Writable<WsState>, data: WebSocketEvent<"heartrate">) {
-	state.update((state) => ({
-		...state,
-		heartrate: data.data 
-	}))
+function _updateHeartrate(_state: Writable<WsState>, data: WebSocketEvent<"heartrate">) {
+	ekgState.update(() => data.data.signals)
+	heartrateState.update(() => data.data.avg)
 }
 
 function _updatePong(state: Writable<WsState>, data: WebSocketEvent<"pong">) {

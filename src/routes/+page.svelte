@@ -1,15 +1,8 @@
+<svelte:options runes="{true}" />
 <script lang="ts">
-	import { wsState } from "$lib/websocket/index";
-	import type { WsState } from "$lib/websocket/index";
-
-	let isWSReady = $state(false);
-	let currWsState = $state<WsState | null>(null);
-
-	wsState.subscribe((state) => {
-		console.log("State: ", state);
-		isWSReady = state.connected;
-		currWsState = state;
-	});
+	import EkgChart from "$lib/component/ekg-chart.svelte"
+	import HeartrateChart from "$lib/component/heartrate-chart.svelte"
+	import Setting from "$lib/component/setting.svelte"
 </script>
 
 <aside class="flex flex-col h-screen w-1/5 bg-neutral-800 text-white">
@@ -17,16 +10,13 @@
 		<h1 class="font-bold text-4xl w-full text-center">Fitness Tracking Weste</h1>
 		<h2 class="text-xl w-full text-center">SIA Project 2024/2025</h2>
 	</div>
-	<div class="px-2 mt-4">
-		{#if isWSReady && currWsState}
-			<p class="">Server <span class="ml-4 font-bold bg-green-700 rounded-xl px-2">connected</span></p>
-			<p class="">Update <span class="ml-4 font-bold ">{currWsState.lastUpdated.toLocaleTimeString()}</span></p>
-		{/if}
-		{#if !isWSReady}
-			<p class="">Server: <span class="font-bold bg-red-700 rounded-xl px-2">disconnected</span></p>
-		{/if}
-	</div>
+	<Setting/>
 </aside>
 <main class="h-screen w-4/5">
-
+	<div class="grid grid-cols-2 h-screen gap-4 p-4">
+		<EkgChart name="ekg-graph"/>
+		<HeartrateChart name="hearzfrequenze"/>
+		<EkgChart name="geolocation"/>
+		<EkgChart name="idk"/>
+	</div>
 </main>
