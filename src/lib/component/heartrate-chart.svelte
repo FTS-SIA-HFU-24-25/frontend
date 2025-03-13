@@ -42,6 +42,6 @@
 </script>
 
 <div class="h-full">
-	<h2 class="flex justify-between items-center px-4 w-full h-[10%] text-2xl font-bold">{name.slice(0,1).toUpperCase()+name.slice(1).replaceAll("-", " ")}<span>Avg: {currAvg} <span class="text-lg">❤️</span></span></h2>
+	<h2 class="flex justify-between items-center pr-4 w-full h-[10%] text-2xl font-bold">{name.slice(0,1).toUpperCase()+name.slice(1).replaceAll("-", " ")}<span>Avg: {currAvg} <span class="text-lg">❤️</span></span></h2>
 	<div id={name} class="border-[0.5px] border-neutral-700 w-auto h-[80%]"></div>
 </div>
