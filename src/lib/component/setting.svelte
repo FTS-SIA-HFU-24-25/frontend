@@ -7,7 +7,6 @@
 	let currWsState = $state<WsState | null>(null);
 
 	wsState.subscribe((state) => {
-		console.log("State: ", state);
 		isWSReady = state.connected;
 		currWsState = state;
 	});
