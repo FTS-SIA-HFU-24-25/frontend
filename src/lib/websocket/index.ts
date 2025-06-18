@@ -1,6 +1,6 @@
 import type { Writable } from "svelte/store"
 import { PUBLIC_WEBSOCKET_URI } from "$env/static/public";
-import type { WebSocketEvent, EKGEvent, Config } from "$lib/types/websocket"
+import type { WebSocketEvent,  Config } from "$lib/types/websocket"
 import { writable } from "svelte/store"
 
 export interface WsState {
@@ -21,6 +21,8 @@ export const ekgState: Writable<number[]> = writable([])
 
 export const heartrateState: Writable<number> = writable(0)
 
+export const tempState: Writable<number> = writable(0)
+
 export const connect = (): WebSocket => {
 	const ws = new WebSocket(PUBLIC_WEBSOCKET_URI+"/ws");
 
@@ -37,11 +39,16 @@ export const connect = (): WebSocket => {
 
 	ws.addEventListener("message", (message: any) => {
 		const raw: WebSocketEvent<any> = JSON.parse(message.data);
+		console.log(raw.event)
 		switch(raw.event) {
 			case "ekg-changes":
 				_updateHeartrate(wsState, raw as WebSocketEvent<"heartrate">)
 			case "pong":
 				_updatePong(wsState, raw as WebSocketEvent<"pong">)	
+			case "temp":
+				_updateTemp(wsState, raw as WebSocketEvent<"temp">)
+			default:
+				console.log(message.data)
 		}
 	})
 
@@ -82,4 +89,9 @@ function _updatePong(state: Writable<WsState>, data: WebSocketEvent<"pong">) {
 		lastUpdated: new Date(),
 		config: data.data
 	}))
+}
+
+function _updateTemp(_state: Writable<WsState>, data: WebSocketEvent<"temp">) {
+	console.log(data)
+	tempState.update(() => data.data.value)
 }
