@@ -2,14 +2,13 @@
 <script lang="ts">
 	import EkgChart from "$lib/component/ekg-chart.svelte"
 	import HeartrateChart from "$lib/component/heartrate-chart.svelte"
-	//import Map from "$lib/component/map.svelte"
+	import TempChart from "$lib/component/temp-chart.svelte"
 </script>
 
-<main class="w-4/5">
-	<div class="grid grid-cols-2 h-screen gap-4 p-4">
-		<EkgChart name="ekg-graph"/>
+<main class="w-full p-10">
+	<EkgChart name="ekg-graph"/>
+	<div class="grid grid-cols-2 h-[600px] gap-4">
 		<HeartrateChart name="herzfrequenz"/>
-		<EkgChart name="temperatur"/>
-		<EkgChart name="geolocation"/>
+		<TempChart name="temperatur"/>
 	</div>
 </main>
