@@ -12,7 +12,7 @@
 	});
 </script>
 
-<div class="px-2 mt-4">
+<div class="px-4 mt-4">
 	{#if isWSReady && currWsState}
 		<p class="">Server <span class="ml-4 font-bold bg-green-700 rounded-xl px-2">connected</span></p>
 		<p class="">Update <span class="ml-4 font-bold ">{currWsState.lastUpdated.toLocaleTimeString()}</span></p>
