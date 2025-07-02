@@ -23,7 +23,7 @@ export const ekgState: Writable<number[]> = writable([])
 export const heartrateState: Writable<number> = writable(0)
 
 export const tempState: Writable<number> = writable(0)
-export const gyroState: Writable<{x: number, y: number, z: number}> = writable({x: 0, y: 0, z: 0})
+export const gyroState: Writable<{x: number, y: number, z: number}> = writable({x: 0, y: 0, z: 90})
 export const accelState: Writable<{x: number, y: number, z: number}> = writable({x: 0, y: 0, z: 0})
 
 export const connect = (): WebSocket => {
