@@ -35,12 +35,12 @@
 		}
 
 		// Trim the series to keep the last CHUNK_SIZE * 10 elements
-		if (data.series[0].length >= CHUNK_SIZE * 10) {
-		  data.series[0] = data.series[0].slice(-CHUNK_SIZE * 10);
+		if (data.series[0].length >= 200) {
+		  data.series[0] = data.series[0].slice(-200);
 		}
 
 		// Prevent excessive data growth
-		if (data.series[0].length > CHUNK_SIZE * 11.5) {
+		if (data.series[0].length > CHUNK_SIZE * 4.5) {
 		  console.warn('Data series length exceeded limit:', data.series[0].length);
 		  return; // Skip update to avoid performance issues
 		}
